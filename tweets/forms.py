@@ -3,6 +3,7 @@ from .models import Tweet
 
 MAX_LENGTH = 240
 
+
 class TweetForm(forms.ModelForm):
     class Meta:
         model = Tweet
