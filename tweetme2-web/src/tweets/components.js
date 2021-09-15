@@ -1,20 +1,23 @@
 import React from 'react'
 import {useState, useEffect} from 'react';
-import { loadTweets } from '../lookup';
+import { loadTweets, createTweet } from '../lookup';
 
 export function TweetComponent(props) {
     const textAreaRef = React.createRef()
     const [newTweets, setNewTweets] = useState([])
+    const handleBackendUpdate = (response, status) => {
+        let tempNewTweets = [...newTweets]
+        if(status === 201) {
+            tempNewTweets.unshift(response)
+            setNewTweets(tempNewTweets)
+        } else {
+            console.log(response)
+        }
+    }
     const handleSubmit = (event) => {
         event.preventDefault()
         const newValue = textAreaRef.current.value
-        let tempNewTweets = [...newTweets]
-        tempNewTweets.unshift({
-            content: newValue,
-            likes: 0,
-            id: 12313
-        })
-        setNewTweets(tempNewTweets)
+        createTweet(newValue, handleBackendUpdate)
         textAreaRef.current.value = ''
     }
 
@@ -34,6 +37,7 @@ export function TweetComponent(props) {
 export function TweetsList(props) {
     const [tweets, setTweets] = useState([])
     const [tweets2, setTweets2] = useState([])
+    const [tweetsDidSet, setTweetsDidSet] = useState(false)
     console.log(props.newTweets)
     useEffect(() => {
         const final = [...props.newTweets].concat(tweets)
@@ -43,15 +47,18 @@ export function TweetsList(props) {
     }, [props.newTweets, tweets2, tweets])
 
     useEffect(() => {
-        const myCallback = (response, status) => {
-        if (status === 200) {
-            setTweets(response)
-        } else {
-            alert("There was an error.")
+        if (tweetsDidSet === false) {
+            const myCallback = (response, status) => {
+                if (status === 200) {
+                    setTweets(response)
+                    setTweetsDidSet(true)
+                } else {
+                    alert("There was an error.")
+                }
+                }
+            loadTweets(myCallback)   
         }
-        }
-        loadTweets(myCallback)
-    }, [])
+    }, [tweets, tweetsDidSet ,setTweetsDidSet])
 
     return tweets2.map((item, index) => {
         return <Tweet tweet={item} key={`${index}`} />
