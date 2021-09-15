@@ -5,6 +5,7 @@ from rest_framework.decorators import api_view, permission_classes, authenticati
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.authentication import SessionAuthentication
+from tweetme2.rest_api.dev import DevAuthentication
 from .models import Tweet
 from django.views.decorators.csrf import csrf_exempt
 from django.utils.http import is_safe_url
@@ -44,9 +45,9 @@ def tweet_detail_view(request, tweet_id, *args, **kwargs):
 
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
-@authentication_classes([SessionAuthentication])
+@authentication_classes([DevAuthentication])
 def tweet_create_view(request, *args, **kwargs):
-    serializer = TweetCreateSerializer(data=request.POST)
+    serializer = TweetCreateSerializer(data=request.data)
     if serializer.is_valid(raise_exception=True):
         serializer.save(user=request.user)
         return Response(serializer.data, status=201)

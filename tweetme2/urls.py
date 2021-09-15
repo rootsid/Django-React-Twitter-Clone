@@ -28,7 +28,7 @@ urlpatterns = [
     path('tweets/<int:tweet_id>', tweet_detail_view, name="detail_view"),
     path('api/tweets/', include('tweets.urls')),
 
-    path('react/', TemplateView.as_view(template_name='tweets/react.html')),
+    path('react/', TemplateView.as_view(template_name='tweets/react_via_dj.html')),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
 
