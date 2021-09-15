@@ -15,7 +15,7 @@ tweetme2-web/node_modules/
 /coverage
 
 # production
-/build
+tweetme2-web/build
 
 # misc
 .DS_Store
