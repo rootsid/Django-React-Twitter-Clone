@@ -69,7 +69,7 @@ def tweet_delete_view(request, tweet_id, *args, **kwargs):
 
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
-@authentication_classes([SessionAuthentication])
+@authentication_classes([DevAuthentication, SessionAuthentication])
 def tweet_action_view(request, *args, **kwargs):
     '''
     id is required
