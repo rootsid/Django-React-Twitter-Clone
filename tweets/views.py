@@ -25,14 +25,17 @@ def home_view(request, *args, **kwargs):
 def tweet_list_view(request, *args, **kwargs):
     user = request.user
     qs = Tweet.objects.all()
+    username = request.GET.get('username')
     # qs = Tweet.objects.filter(user__username=user)
+    if username != None:
+        qs = qs.filter(user__username__iexact=username)
     serializer = TweetSerializer(qs, many=True)
     return Response(serializer.data, status=200)
 
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
-@authentication_classes([SessionAuthentication])
+@authentication_classes([DevAuthentication, SessionAuthentication])
 def tweet_detail_view(request, tweet_id, *args, **kwargs):
     user = request.user
     qs = Tweet.objects.filter(id=tweet_id, user__username=user)

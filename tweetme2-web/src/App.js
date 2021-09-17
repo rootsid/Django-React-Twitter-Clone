@@ -2,7 +2,7 @@ import logo from './logo.svg';
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import React from 'react';
-import { TweetComponent } from './tweets';
+import { TweetsComponent } from './tweets';
 
 
 function App() {
@@ -14,7 +14,7 @@ function App() {
           Edit <code>src/App.js</code> and save to reload.
         </p>
         <div>
-          <TweetComponent />
+          <TweetsComponent />
         </div>
         <a
           className="App-link"
